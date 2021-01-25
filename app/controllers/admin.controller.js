@@ -1,16 +1,20 @@
 const db = require("../models");
-const Tutorial = db.admins;
+const Admin = db.admins;
+
+
 
 // Create and Save a new Tutorial
-exports.create = (req, res) => {
-    // Validate request
+exports.create = async (req, res) => {
+ 
+  
+  // Validate request
     if (!req.body.name) {
       res.status(400).send({ message: "Content can not be empty!" });
       return;
     }
-  
-    // Create a Tutorial
-    const tutorial = new Tutorial({
+ 
+  // Create a Tutorial
+    const tutorial = new Admin({
         name: req.body.name,
         permissions: req.body.permissions,
         username: req.body.username,

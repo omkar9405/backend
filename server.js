@@ -16,6 +16,9 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//import Routes
+const authRoot = require('./app/middleware/auth');
+
 //mongo connect
 const db = require("./app/models");
 db.mongoose

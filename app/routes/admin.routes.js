@@ -2,9 +2,10 @@ module.exports = app => {
     const admin = require("../controllers/admin.controller.js");
   
     var router = require("express").Router();
+
   
     // Create a new Tutorial
-    router.post("/", admin.create);
+    router.post("/register", admin.create);
   
     // Retrieve all admin
     router.get("/", admin.findAll);

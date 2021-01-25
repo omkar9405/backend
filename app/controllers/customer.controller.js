@@ -1,44 +1,167 @@
 const db = require("../models");
-const Tutorial = db.customers;
+const Customer = db.customers;
+const { check, validationResult } =require('express-validator');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");  
+const  token  = require("morgan");
+
+
+
+exports.login =async (req,res)=>{
+ // Validate request
+ const errors = validationResult(req);
+ if(!errors.isEmpty())
+   {
+     return res.status(400).json({
+       errors: errors.array()
+     });
+   }
+
+   const {email,password}=req.body;
+
+   try{
+     let customer=await Customer.findOne({
+       email
+     });
+     if(!customer)
+     {
+       return res.status(400).json({
+         message:"User not exists"
+       });
+     }
+
+     const isMatch = await bcrypt.compare(password,customer.password);
+     if(!isMatch)
+     {
+       return res.status(400).json({
+         message:"Incorrect Password"
+       });
+     }
+
+     const payload={
+       customer:{
+         id:customer.id,
+         name:customer.customername,
+         email:customer.email
+       }
+     };
+
+     jwt.sign(
+       payload,"randomString",
+       {
+         expiresIn:3600
+       },
+       (err,token)=>{
+         if(err) throw err;
+         res.status(200).json({
+           token
+         });
+       }
+     )
+   }
+   catch(err){
+     console.error(err);
+     res.status(500).json(
+       {
+         message:"Server error"
+       }
+     );
+   }
+}
 
 // Create and Save a new Tutorial
-exports.create = (req, res) => {
-    // Validate request
-    if (!req.body.customername) {
-      res.status(400).send({ message: "Content can not be empty!" });
-      return;
+exports.create = async (req, res) => {
+  // Validate request
+  const errors = validationResult(req);
+  if(!errors.isEmpty())
+    {
+      return res.status(400).json({
+        errors: errors.array()
+      });
     }
   
-    // Create a Tutorial
-    const tutorial = new Tutorial({
-        customername: req.body.customername,
-        requesttype: req.body.requesttype,
-        address: req.body.address,
-        pincode: req.body.pincode,
-        mobile: req.body.mobile,
-        feedback: req.body.feedback
+    // Create a customer
+    const {
+      customername,
+      requesttype,
+      address,
+      pincode,
+      mobile,
+      email,
+      password,
+      feedback
+  }=req.body;
+
+    try{
+      let customer= await Customer.findOne({
+        email
+      });
+      if (customer){
+        return res.status(400).json(
+          {
+            message:"Customer already exists"
+          }
+        );
+      }
+     customer = new Customer({
+        customername,
+        requesttype,
+        address,
+        pincode,
+        mobile,
+        email,
+        password,
+        feedback
     });
+
+    const salt =await bcrypt.genSalt(10);
+    customer.password = await bcrypt.hash(password,salt);
+    await customer.save();
+
+    const payload ={
+      customer:{
+        id:customer.id
+      }
+    };
+
+    jwt.sign(
+      payload,
+      "randomString",{
+        expiresIn:10000
+      },
+      (err,token)=>{
+        if(err) throw err;
+        res.status(200).json({
+          token
+        });
+      }
+    );
+    }
+    catch(err){
+      console.log(err.message);
+      res.status(500).send("error in saving");
+    }
   
     // Save Tutorial in the database
-    tutorial
-      .save(tutorial)
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while creating the Tutorial."
-        });
-      });
+    // tutorial
+    //   .save(tutorial)
+    //   .then(data => {
+    //     res.send(data);
+    //   })
+    //   .catch(err => {
+    //     res.status(500).send({
+    //       message:
+    //         err.message || "Some error occurred while creating the Tutorial."
+    //     });
+    //   });
   };
 
 // Retrieve all Tutorials from the database.
-exports.findAll = (req, res) => {
+exports.findAll = async (req, res) => {
     const customername = req.query.customername;
     var condition = customername ? { customername: { $regex: new RegExp(customername), $options: "i" } } : {};
   
-    Tutorial.find(condition)
+    Customer.find(condition)
       .then(data => {
         res.send(data);
       })
@@ -51,10 +174,10 @@ exports.findAll = (req, res) => {
   };
 
 // Find a single Tutorial with an id
-exports.findOne = (req, res) => {
+exports.findOne = async (req, res) => {
     const id = req.params.id;
   
-    Tutorial.findById(id)
+    Customer.findById(id)
       .then(data => {
         if (!data)
           res.status(404).send({ message: "Not found Tutorial with id " + id });
@@ -77,7 +200,7 @@ exports.update = (req, res) => {
   
     const id = req.params.id;
   
-    Tutorial.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    Customer.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
       .then(data => {
         if (!data) {
           res.status(404).send({
@@ -96,7 +219,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     const id = req.params.id;
   
-    Tutorial.findByIdAndRemove(id)
+    Customer.findByIdAndRemove(id)
       .then(data => {
         if (!data) {
           res.status(404).send({
@@ -117,7 +240,7 @@ exports.delete = (req, res) => {
 
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
-    Tutorial.deleteMany({})
+  Customer.deleteMany({})
       .then(data => {
         res.send({
           message: `${data.deletedCount} Tutorials were deleted successfully!`
@@ -133,7 +256,7 @@ exports.deleteAll = (req, res) => {
 
 // Find all published Tutorials
 exports.findAllPublished = (req, res) => {
-    Tutorial.find({ published: true })
+  Customer.find({ published: true })
       .then(data => {
         res.send(data);
       })
