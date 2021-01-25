@@ -4,11 +4,11 @@ const cors = require("cors");
 require('dotenv').config();
 const app = express();
 
-var corsOptions = {
-  origin: "http://localhost:5000"
-};
+//var corsOptions = {
+ // origin: "http://localhost:5000"
+//};
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
@@ -40,7 +40,7 @@ app.get("/", (req, res) => {
 });
 
 // set port, listen for requests
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8081;
 require("./app/routes/tutorial.routes")(app);
 require("./app/routes/employee.routes")(app);
 require("./app/routes/customer.routes")(app);
