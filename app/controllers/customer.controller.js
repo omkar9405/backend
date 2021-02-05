@@ -1,9 +1,9 @@
 const db = require("../models");
 const Customer = db.customers;
-const { check, validationResult } =require('express-validator');
+const {  validationResult } =require('express-validator');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");  
-const  token  = require("morgan");
+
 
 
 
@@ -88,9 +88,14 @@ exports.create = async (req, res) => {
       pincode,
       mobile,
       email,
+      dob,
+      gender,
       password,
+      signupcondition,
       feedback
   }=req.body;
+
+ 
 
     try{
       let customer= await Customer.findOne({
@@ -111,6 +116,9 @@ exports.create = async (req, res) => {
         mobile,
         email,
         password,
+        dob,
+        gender,
+        signupcondition,
         feedback
     });
 
@@ -118,42 +126,12 @@ exports.create = async (req, res) => {
     customer.password = await bcrypt.hash(password,salt);
     await customer.save();
 
-    const payload ={
-      customer:{
-        id:customer.id
-      }
-    };
-
-    jwt.sign(
-      payload,
-      "randomString",{
-        expiresIn:10000
-      },
-      (err,token)=>{
-        if(err) throw err;
-        res.status(200).json({
-          token
-        });
-      }
-    );
     }
     catch(err){
       console.log(err.message);
       res.status(500).send("error in saving");
     }
-  
-    // Save Tutorial in the database
-    // tutorial
-    //   .save(tutorial)
-    //   .then(data => {
-    //     res.send(data);
-    //   })
-    //   .catch(err => {
-    //     res.status(500).send({
-    //       message:
-    //         err.message || "Some error occurred while creating the Tutorial."
-    //     });
-    //   });
+
   };
 
 // Retrieve all Tutorials from the database.

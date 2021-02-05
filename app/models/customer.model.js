@@ -6,16 +6,13 @@ module.exports = mongoose => {
             required:true
         },
         requesttype: {
-            type:String,
-            required:true
+            type:String
         },
         address: {
-            type:String,
-            required:true
+            type:String
         },
         pincode: {
-            type:Number,
-            required:true
+            type:Number
         },
         mobile: {
             type:Number,
@@ -25,13 +22,23 @@ module.exports = mongoose => {
           type:String,
           required:true
       },
+      dob:{
+        type:Date,
+        required:true
+      },
+      gender:{
+        type:String,
+        required:true
+      },
       password: {
         type:String,
         required:true
     },
+    signupcondition:{
+    type:String,
+    required:true},
         feedback:{
-            type:String,
-            required:true
+            type:String
         }
       },
       { timestamps: true }

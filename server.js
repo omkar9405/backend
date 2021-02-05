@@ -1,6 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+
+var fs = require('fs');
+var path = require('path');
 require('dotenv').config();
 const app = express();
 
@@ -16,8 +19,15 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//import Routes
-const authRoot = require('./app/middleware/auth');
+
+// Step 4 - set up EJS
+ 
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+ 
+// Set EJS as templating engine 
+app.set("view engine", "ejs");
+
 
 //mongo connect
 const db = require("./app/models");
