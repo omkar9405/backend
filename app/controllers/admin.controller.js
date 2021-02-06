@@ -14,7 +14,7 @@ exports.create = async (req, res) => {
     }
  
   // Create a Tutorial
-    const tutorial = new Admin({
+    const admin = new Admin({
         name: req.body.name,
         permissions: req.body.permissions,
         username: req.body.username,
@@ -25,7 +25,7 @@ exports.create = async (req, res) => {
   
     // Save Tutorial in the database
     tutorial
-      .save(tutorial)
+      .save(admin)
       .then(data => {
         res.send(data);
       })
@@ -42,7 +42,7 @@ exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { $regex: new RegExp(name), $options: "i" } } : {};
   
-    Tutorial.find(condition)
+    Admin.find(condition)
       .then(data => {
         res.send(data);
       })
@@ -58,7 +58,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
   
-    Tutorial.findById(id)
+    Admin.findById(id)
       .then(data => {
         if (!data)
           res.status(404).send({ message: "Not found Tutorial with id " + id });
@@ -81,7 +81,7 @@ exports.update = (req, res) => {
   
     const id = req.params.id;
   
-    Tutorial.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    Admin.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
       .then(data => {
         if (!data) {
           res.status(404).send({
@@ -100,7 +100,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     const id = req.params.id;
   
-    Tutorial.findByIdAndRemove(id)
+    Admin.findByIdAndRemove(id)
       .then(data => {
         if (!data) {
           res.status(404).send({
@@ -121,7 +121,7 @@ exports.delete = (req, res) => {
 
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
-    Tutorial.deleteMany({})
+    Admin.deleteMany({})
       .then(data => {
         res.send({
           message: `${data.deletedCount} Tutorials were deleted successfully!`
@@ -137,7 +137,7 @@ exports.deleteAll = (req, res) => {
 
 // Find all published Tutorials
 exports.findAllPublished = (req, res) => {
-    Tutorial.find({ published: true })
+    Admin.find({ published: true })
       .then(data => {
         res.send(data);
       })

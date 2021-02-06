@@ -5,7 +5,7 @@ module.exports = mongoose => {
             type:String,
             required:true
         },
-        requesttype: {
+        service: {
             type:String
         },
         address: {
@@ -23,7 +23,10 @@ module.exports = mongoose => {
           required:true
       },
       dob:{
-        type:Date,
+        type:String,
+	pattern: "^[1-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]$",
+	format:Date,
+	example:"1998/04/16",
         required:true
       },
       gender:{
@@ -34,9 +37,10 @@ module.exports = mongoose => {
         type:String,
         required:true
     },
-    signupcondition:{
+    signupcondition: {
     type:String,
-    required:true},
+    required:true
+    },
         feedback:{
             type:String
         }

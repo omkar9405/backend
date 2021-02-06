@@ -5,7 +5,7 @@ module.exports = app => {
 
   
     // Create a new Tutorial
-    router.post("/register", admin.create);
+    router.post("/", admin.create);
   
     // Retrieve all admin
     router.get("/", admin.findAll);

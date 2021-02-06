@@ -72,27 +72,28 @@ exports.login =async (req,res)=>{
 // Create and Save a new Tutorial
 exports.create = async (req, res) => {
   // Validate request
-  const errors = validationResult(req);
-  if(!errors.isEmpty())
-    {
-      return res.status(400).json({
-        errors: errors.array()
-      });
-    }
+  // const errors = validationResult(req);
+  // if(!errors.isEmpty())
+  //   {
+  //     return res.status(400).json({
+  //       errors: errors.array()
+  //     });
+  //   }
   
     // Create a customer
     const {
       customername,
-      requesttype,
+      service,
       address,
       pincode,
       mobile,
       email,
+      password,
       dob,
       gender,
-      password,
       signupcondition,
       feedback
+      
   }=req.body;
 
  
@@ -109,27 +110,35 @@ exports.create = async (req, res) => {
         );
       }
      customer = new Customer({
-        customername,
-        requesttype,
-        address,
-        pincode,
-        mobile,
-        email,
-        password,
-        dob,
-        gender,
-        signupcondition,
-        feedback
+      customername,
+      service,
+      address,
+      pincode,
+      mobile,
+      email,
+      password,
+      dob,
+      gender,
+      signupcondition,
+      feedback
+        
     });
 
     const salt =await bcrypt.genSalt(10);
     customer.password = await bcrypt.hash(password,salt);
-    await customer.save();
+    await customer.save()
+                .then(data => {
+                res.send(data);
+                })
 
     }
     catch(err){
       console.log(err.message);
-      res.status(500).send("error in saving");
+      res.status(500).json(
+	{
+		message:"Error in Saving"	
+	}	
+	);
     }
 
   };
