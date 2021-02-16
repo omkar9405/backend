@@ -7,10 +7,6 @@ var path = require('path');
 require('dotenv').config();
 const app = express();
 
-//var corsOptions = {
- // origin: "http://localhost:5000"
-//};
-
 app.use(cors());
 
 // parse requests of content-type - application/json
@@ -52,9 +48,10 @@ app.get("/", (req, res) => {
 // set port, listen for requests
 const PORT = process.env.PORT || 8081;
 require("./app/routes/tutorial.routes")(app);
-require("./app/routes/employee.routes")(app);
+require("./app/routes/tasker.routes")(app);
 require("./app/routes/customer.routes")(app);
 require("./app/routes/admin.routes")(app);
+require("./app/routes/team.routes")(app);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

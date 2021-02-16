@@ -1,32 +1,31 @@
 module.exports = mongoose => {
     var schema = mongoose.Schema(
       {
-        employeename:{
+        name:{
             type:String,
             required:true
         },
-        jobtype: {
+        position: {
             type:String,
             required:true
         },
-        education: {
+        email: {
             type:String,
             required:true
         },
-        address: {
-            type:String,
-            required:true
+        facebook: {
+            type:String
         },
-        pincode: {
-            type:Number,
-            required:true
+        tweeter: {
+            type:String
         },
-        mobile: {
-            type:Number,
-            required:true
-        },
-        active: Boolean
+        instagram: {
+          type:String
       },
+      linkedin: {
+        type:String
+      }
+    },
       { timestamps: true }
     );
   
@@ -36,6 +35,6 @@ module.exports = mongoose => {
       return object;
     });
   
-    const Employee = mongoose.model("employee", schema);
-    return Employee;
+    const Team = mongoose.model("team", schema);
+    return Team;
   };
