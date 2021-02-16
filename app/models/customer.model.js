@@ -8,6 +8,9 @@ module.exports = mongoose => {
         service: {
             type:String
         },
+        imagePath:{
+          type:String
+        },
         address: {
             type:String
         },

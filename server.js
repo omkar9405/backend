@@ -45,6 +45,10 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to omkar powar application." });
 });
 
+//images
+app.use('/images', express.static(path.join('images')));
+
+
 // set port, listen for requests
 const PORT = process.env.PORT || 8081;
 require("./app/routes/tutorial.routes")(app);

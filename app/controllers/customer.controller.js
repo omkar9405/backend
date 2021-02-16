@@ -85,6 +85,7 @@ exports.create = async (req, res) => {
       customername,
       service,
       address,
+      imagePath,
       pincode,
       mobile,
       email,
@@ -113,6 +114,7 @@ exports.create = async (req, res) => {
       customername,
       service,
       address,
+      imagePath,
       pincode,
       mobile,
       email,
@@ -125,6 +127,7 @@ exports.create = async (req, res) => {
     });
 
     const salt =await bcrypt.genSalt(10);
+    customer.imagePath= 'https://justdialapi.herokuapp.com/images/'+ req.file.filename;
     customer.password = await bcrypt.hash(password,salt);
     await customer.save()
                 .then(data => {

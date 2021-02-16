@@ -2,11 +2,9 @@ const auth = require("../middleware/auth.js");
 
 module.exports = app => {
     const customers = require("../controllers/customer.controller.js");
-    const { check, validationResult } =require('express-validator');
-    const bcrypt = require("bcryptjs");
-    const jwt = require("jsonwebtoken");  
+    const { check } =require('express-validator');
     var router = require("express").Router();
-  
+    const storage = require('../middleware/storage');
 
     // Login
     router.post("/login",
@@ -23,7 +21,7 @@ module.exports = app => {
       .isEmpty(),
       check("email","Please enter valid email").isEmail(),
       check("password","Please enter a valid password").isLength({min:6})
-    ], customers.create);
+    ],customers.create);
   
     // Retrieve all customers
     router.get("/",auth, customers.findAll);
@@ -35,7 +33,7 @@ module.exports = app => {
     router.get("/:id",auth,customers.findOne);
   
     // Update a Tutorial with id
-    router.put("/:id",auth, customers.update);
+    router.put("/:id",auth,storage, customers.update);
   
     // Delete a Tutorial with id
     router.delete("/:id",auth, customers.delete);
