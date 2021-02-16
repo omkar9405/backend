@@ -9,6 +9,19 @@ module.exports = mongoose => {
             type:String,
             required:true
         },
+        completedTasks:{
+          type:Number
+        },
+        skills:[
+          {
+            skillname:{
+            type:String
+            },
+            charges:{
+            type:String
+            }
+          }
+        ],
         education: {
             type:String,
             required:true

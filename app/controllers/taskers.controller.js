@@ -18,6 +18,8 @@ exports.create = (req, res) => {
 	    address:req.body.address,
         pincode:req.body.pincode,
         mobile: req.body.mobile,
+        completedTasks:req.body.completedTasks,
+        skills:req.body.skills,
       active: req.body.active ? req.body.active : false
     });
   
