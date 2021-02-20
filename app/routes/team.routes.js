@@ -15,7 +15,7 @@ module.exports = app => {
       check("email","Please enter valid email").isEmail()
     ], teams.create);
   
-    // Retrieve all customers
+    // Retrieve all team
     router.get("/", teams.findAll);
   
     // Retrieve a single Tutorial with id
