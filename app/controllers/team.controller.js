@@ -13,6 +13,7 @@ exports.create = (req, res) => {
     const team = new Team({
       name: req.body.name,
       position: req.body.position,
+      imagePath:req.body.imagePath,
       email: req.body.email,
       tweeter: req.body.tweeter,
       facebook: req.body.facebook,

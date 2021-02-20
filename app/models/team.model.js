@@ -9,6 +9,9 @@ module.exports = mongoose => {
             type:String,
             required:true
         },
+         imagePath:{
+          type:String
+        },
         email: {
             type:String,
             required:true
