@@ -1,40 +1,139 @@
 const db = require("../models");
 const Admin = db.admins;
+const {  validationResult } =require('express-validator');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");  
 
 
+exports.login =async (req,res)=>{
+  // Validate request
+  const errors = validationResult(req);
+  if(!errors.isEmpty())
+    {
+      return res.status(400).json({
+        errors: errors.array()
+      });
+    }
+ 
+    const {username,password}=req.body;
+ 
+    try{
+      let admin=await Admin.findOne({
+        username
+      });
+      if(!admin)
+      {
+        return res.status(400).json({
+          message:"User not exists"
+        });
+      }
+ 
+      const isMatch = await bcrypt.compare(password,admin.password);
+      if(!isMatch)
+      {
+        return res.status(400).json({
+          message:"Incorrect Password"
+        });
+      }
+ 
+      const payload={
+        admin:{
+          id:admin.id,
+          name:admin.name,
+          email:admin.email
+        }
+      };
+ 
+      jwt.sign(
+        payload,"randomString",
+        {
+          expiresIn:3600
+        },
+        (err,token)=>{
+          if(err) throw err;
+          res.status(200).json({
+            token
+          });
+        }
+      )
+    }
+    catch(err){
+      console.error(err);
+      res.status(500).json(
+        {
+          message:"Server error"
+        }
+      );
+    }
+ }
+ 
 
 // Create and Save a new Tutorial
 exports.create = async (req, res) => {
- 
-  
   // Validate request
     if (!req.body.name) {
       res.status(400).send({ message: "Content can not be empty!" });
       return;
     }
  
-  // Create a Tutorial
-    const admin = new Admin({
-        name: req.body.name,
-        permissions: req.body.permissions,
-        username: req.body.username,
-        password: req.body.password,
-        mobile: req.body.mobile,
-        email: req.body.email
-    });
-  
-    // Save Tutorial in the database
-    tutorial
-      .save(admin)
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while creating the Tutorial."
-        });
+    const {
+      name,
+      permissions,
+      username,
+      password,
+      mobile,
+      email
+      
+  }=req.body;
+
+ 
+
+    try{
+      let Username= await Admin.findOne({
+        username
       });
+      if (Username){
+        return res.status(400).json(
+          {
+            message:"Username already exists"
+          }
+        );
+      }
+      let Email=  await Admin.findOne({
+        email
+      });
+      if (Email){
+        return res.status(400).json(
+          {
+            message:"Email already exists"
+          }
+        );
+      }
+     admin = new Admin({
+      name,
+      permissions,
+      username,
+      password,
+      mobile,
+      email
+    });
+
+    const salt =await bcrypt.genSalt(10);
+    //admin.imagePath= 'https://justdialapi.herokuapp.com/images/'+ req.file.filename;
+    admin.password = await bcrypt.hash(password,salt);
+    await admin.save()
+                .then(data => {
+                res.send(data);
+                })
+
+    }
+    catch(err){
+      console.log(err.message);
+      res.status(500).json(
+	{
+		message:"Error in Saving"	
+	});
+  }    
   };
 
 // Retrieve all Tutorials from the database.

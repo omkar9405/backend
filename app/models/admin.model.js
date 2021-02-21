@@ -6,8 +6,7 @@ module.exports = mongoose => {
             required:true
         },
         permissions: {
-            type:String,
-            required:true
+            type:String
         },
         username: {
             type:String,
