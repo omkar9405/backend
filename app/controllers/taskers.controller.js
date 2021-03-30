@@ -19,11 +19,12 @@ exports.create = (req, res) => {
         mobile: req.body.mobile,
         completedTasks:req.body.completedTasks,
         skills:req.body.skills,
+        imagePath:req.body.imagePath,
         email:req.body.email,
         dob:req.body.dob,
       active: req.body.active ? req.body.active : false
     });
-  
+    customer.imagePath= 'https://justdialapi.herokuapp.com/images/'+ req.file.filename;
     // Save Tasker in the database
     tasker
       .save(tasker)

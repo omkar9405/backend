@@ -22,7 +22,7 @@ module.exports = app => {
     router.get("/:id",auth,teams.findOne);
   
     // Update a Tutorial with id
-    router.put("/:id",auth, teams.update);
+    router.put("/:id", teams.update);
   
     // Delete a Tutorial with id
     router.delete("/:id",auth, teams.delete);

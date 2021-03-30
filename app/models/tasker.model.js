@@ -9,6 +9,9 @@ module.exports = mongoose => {
             type:String,
             required:true
         },
+        imagePath:{
+          type:String
+        },
         completedTasks:{
           type:Number
         },
