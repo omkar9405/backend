@@ -11,4 +11,5 @@ db.taskers = require("./tasker.model.js")(mongoose);
 db.customers = require("./customer.model.js")(mongoose);
 db.admins = require("./admin.model.js")(mongoose);
 db.teams = require("./team.model.js")(mongoose);
+db.carts = require("./cart.model.js")(mongoose);
 module.exports = db;

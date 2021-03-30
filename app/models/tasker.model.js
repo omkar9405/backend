@@ -24,19 +24,27 @@ module.exports = mongoose => {
         ],
         education: {
             type:String,
-            required:true
         },
         address: {
             type:String,
-            required:true
         },
         pincode: {
             type:Number,
-            required:true
         },
         mobile: {
             type:Number,
             required:true
+        },
+        email:{
+          type:String,
+          required:true
+        },
+        dob:{
+          type:String,
+          pattern: "^[1-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]$",
+          format:Date,
+          example:"1998/04/16",
+          required:true
         },
         active: Boolean
       },

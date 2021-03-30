@@ -82,11 +82,8 @@ exports.create = async (req, res) => {
       username,
       password,
       mobile,
-      email
-      
+      email 
   }=req.body;
-
- 
 
     try{
       let Username= await Admin.findOne({
@@ -247,3 +244,17 @@ exports.findAllPublished = (req, res) => {
         });
       });
   };
+
+// Find All Tasks 
+  // exports.findAllTasks = (req,res) => {
+  
+  //  Admin.findAll({cart})
+  //   .then(data => {
+  //     res.send(data);
+  //   })
+  //   .catch(err => {
+  //     res.status(500).send({
+  //       message:err.message || "Some error occured."
+  //     });
+  //   });
+  // };

@@ -59,6 +59,8 @@ require("./app/routes/tasker.routes")(app);
 require("./app/routes/customer.routes")(app);
 require("./app/routes/admin.routes")(app);
 require("./app/routes/team.routes")(app);
+require("./app/routes/cart.routes")(app);
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

@@ -37,6 +37,9 @@ module.exports = app => {
   
     // Update a Tutorial with id
     router.put("/:id", auth,admin.update);
+
+    // Update a Tutorial with id
+    // router.get("/cart",admin.findAllTasks);
   
     // Delete a Tutorial with id
     router.delete("/:id", auth,admin.delete);

@@ -1,32 +1,28 @@
+// const { carts } = require("../models");
 const db = require("../models");
-const Tasker = db.taskers;
+const Cart = db.carts;
 
 // Create and Save a new Tasker
 exports.create = (req, res) => {
-    // Validate request
-    if (!req.body.name) {
-      res.status(400).send({ message: "Content can not be empty!" });
-      return;
-    }
   
     // Create a Tasker
-    const tasker = new Tasker({
-        name: req.body.name,
-	    jobtype:req.body.jobtype,
-	    education: req.body.education,
-	    address:req.body.address,
-        pincode:req.body.pincode,
-        mobile: req.body.mobile,
-        completedTasks:req.body.completedTasks,
-        skills:req.body.skills,
-        email:req.body.email,
-        dob:req.body.dob,
-      active: req.body.active ? req.body.active : false
+    const cart = new Cart({
+        taskId: req.body.taskId,
+	    taskerName:req.body.taskerName,
+	    taskerID: req.body.taskerID,
+	    isAvailable:req.body.isAvailable,
+        requestDate:req.body.requestDate,
+        customerName: req.body.customerName,
+        customerMobile:req.body.customerMobile,
+        customerId:req.body.customerId,
+        status: req.body.status,
+        message: req.body.message,
+        comments:req.body.comments
     });
   
-    // Save Tasker in the database
-    tasker
-      .save(tasker)
+    // Save cart in the database
+    cart
+      .save(cart)
       .then(data => {
         res.send(data);
       })
@@ -40,10 +36,10 @@ exports.create = (req, res) => {
 
 // Retrieve all Taskers from the database.
 exports.findAll = (req, res) => {
-    const name = req.query.name;
+    const name = req.query.taskId;
     var condition = name ? { name: { $regex: new RegExp(name), $options: "i" } } : {};
   
-    Tasker.find(condition)
+    Cart.find(condition)
       .then(data => {
         res.send(data);
       })
@@ -59,7 +55,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
   
-    Tasker.findById(id)
+    Cart.findById(id)
       .then(data => {
         if (!data)
           res.status(404).send({ message: "Not found Tasker with id " + id });
@@ -80,15 +76,15 @@ exports.update = (req, res) => {
       });
     }
   
-    const id = req.params.id;
+    const id = req.params.taskId;
   
-    Tasker.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    Cart.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
       .then(data => {
         if (!data) {
           res.status(404).send({
-            message: `Cannot update Tasker with id=${id}. Maybe Tasker was not found!`
+            message: `Cannot update Task with id=${id}. Maybe Task was not found!`
           });
-        } else res.send({ message: "Tasker was updated successfully." });
+        } else res.send({ message: "Task was updated successfully." });
       })
       .catch(err => {
         res.status(500).send({
@@ -101,11 +97,11 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     const id = req.params.id;
   
-    Tasker.findByIdAndRemove(id)
+    Cart.findByIdAndRemove(id)
       .then(data => {
         if (!data) {
           res.status(404).send({
-            message: `Cannot delete Tasker with id=${id}. Maybe Tasker was not found!`
+            message: `Cannot delete Task with id=${id}. Maybe Task was not found!`
           });
         } else {
           res.send({
@@ -122,23 +118,23 @@ exports.delete = (req, res) => {
 
 // Delete all Taskers from the database.
 exports.deleteAll = (req, res) => {
-    Tasker.deleteMany({})
+    Cart.deleteMany({})
       .then(data => {
         res.send({
-          message: `${data.deletedCount} Taskers were deleted successfully!`
+          message: `${data.deletedCount} Tasks were deleted successfully!`
         });
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while removing all Taskers."
+            err.message || "Some error occurred while removing all Tasks."
         });
       });
   };
 
 // Find all published Taskers
-exports.findAllActive = (req, res) => {
-    Tasker.find({ published: true })
+exports.findAllAvailable = (req, res) => {
+    Cart.find({ isAvailable: true })
       .then(data => {
         res.send(data);
       })
@@ -146,6 +142,32 @@ exports.findAllActive = (req, res) => {
         res.status(500).send({
           message:
             err.message || "Some error occurred while retrieving Taskers."
+        });
+      });
+  };
+
+
+
+  exports.addComment = (req, res) => {
+    if (!req.body) {
+      return res.status(400).send({
+        message: "Data to update can not be empty!"
+      });
+    }
+  
+    const id = req.params.taskId;
+  
+    Cart.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+      .then(data => {
+        if (!data) {
+          res.status(404).send({
+            message: `Cannot update Task with id=${id}. Maybe Task was not found!`
+          });
+        } else res.send({ message: "Task was updated successfully." });
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Error updating Tasker with id=" + id
         });
       });
   };
