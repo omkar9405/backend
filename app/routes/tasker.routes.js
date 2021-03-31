@@ -1,10 +1,15 @@
+const auth = require("../middleware/auth.js");
 module.exports = app => {
     const API = require("../controllers/taskers.controller.js");
   
+    const { check } =require('express-validator');
     var router = require("express").Router();
+    const storage = require('../middleware/storage');
   
+    router.post("/login", API.login);
+
     // Create a new Tutorial
-    router.post("/", API.create);
+    router.post("/signup", API.create);
   
     // Retrieve all API
     router.get("/", API.findAll);
@@ -16,13 +21,13 @@ module.exports = app => {
     router.get("/:id", API.findOne);
   
     // Update a Tutorial with id
-    router.put("/:id", API.update);
+    router.put("/:id", auth,API.update);
   
     // Delete a Tutorial with id
-    router.delete("/:id", API.delete);
+    router.delete("/:id", auth,API.delete);
   
     // Create a new Tutorial
-    router.delete("/", API.deleteAll);
+    router.delete("/", auth,API.deleteAll);
   
     app.use('/api/taskers', router);
   };

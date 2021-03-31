@@ -1,42 +1,167 @@
 const db = require("../models");
 const Tasker = db.taskers;
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+
+
+//login
+exports.login =async (req,res)=>{
+  // Validate request
+  // const errors = validationResult(req);
+  // if(!errors.isEmpty())
+  //   {
+  //     return res.status(400).json({
+  //       errors: errors.array()
+  //     });
+  //   }
+ 
+    const {username,password}=req.body;
+ 
+    try{
+      let tasker=await Tasker.findOne({
+        username
+      });
+      if(!tasker)
+      {
+        return res.status(400).json({
+          message:"User not exists"
+        });
+      }
+ 
+      const isMatch = await bcrypt.compare(password,tasker.password);
+      if(!isMatch)
+      {
+        return res.status(400).json({
+          message:"Incorrect Password"
+        });
+      }
+ 
+      const payload={
+        customer:{
+          id:tasker.id,
+          name:tasker.name,
+          username:tasker.username,
+          imagePath:tasker.imagePath,
+          email:tasker.email
+        }
+      };
+ 
+      jwt.sign(
+        payload,"randomString",
+        {
+          expiresIn:3600
+        },
+        (err,token)=>{
+          if(err) throw err;
+          res.status(200).json({
+            token
+          });
+        }
+      )
+    }
+    catch(err){
+      console.error(err);
+      res.status(500).json(
+        {
+          message:"Server error"
+        }
+      );
+    }
+ }
+ 
+ 
+
+
 
 // Create and Save a new Tasker
-exports.create = (req, res) => {
-    // Validate request
-    if (!req.body.name) {
-      res.status(400).send({ message: "Content can not be empty!" });
-      return;
-    }
-  
-    // Create a Tasker
-    const tasker = new Tasker({
-        name: req.body.name,
-	    jobtype:req.body.jobtype,
-	    education: req.body.education,
-	    address:req.body.address,
-        pincode:req.body.pincode,
-        mobile: req.body.mobile,
-        completedTasks:req.body.completedTasks,
-        skills:req.body.skills,
-        imagePath:req.body.imagePath,
-        email:req.body.email,
-        dob:req.body.dob,
-      active: req.body.active ? req.body.active : false
+exports.create = async(req, res) => {
+  const {
+    name,
+	    jobtype,
+	    education,
+	    address,
+        pincode,
+        mobile,
+        completedTasks,
+        skills,
+        imagePath,
+        email,
+        dob,
+        username,
+        password,
+      active
+    
+}=req.body;
+
+
+
+  try{
+    let tasker= await Tasker.findOne({
+      email
     });
-    customer.imagePath= 'https://justdialapi.herokuapp.com/images/'+ req.file.filename;
-    // Save Tasker in the database
-    tasker
-      .save(tasker)
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while creating the Tasker."
-        });
-      });
+    if (tasker){
+      return res.status(400).json(
+        {
+          message:"Tasker already exists"
+        }
+      );
+    }
+   tasker = new Tasker({
+    name,
+	    jobtype,
+	    education,
+	    address,
+        pincode,
+        mobile,
+        completedTasks,
+        skills,
+        imagePath,
+        email,
+        dob,
+        username,
+        password,
+      active
+      
+  });
+
+  const salt =await bcrypt.genSalt(10);
+  // tasker.imagePath= 'https://justdialapi.herokuapp.com/images/'+ req.file.filename;
+  tasker.password = await bcrypt.hash(password,salt);
+  await tasker.save()
+              .then(data => {
+              res.send(data);
+              })
+
+  }
+  catch(err){
+    console.log(err.message);
+    res.status(500).json(
+{
+  message:"Error in Saving"	
+}	
+);
+  }
+      
+    // Create a Tasker
+    // const tasker = new Tasker({
+    //     name: req.body.name,
+	  //   jobtype:req.body.jobtype,
+	  //   education: req.body.education,
+	  //   address:req.body.address,
+    //     pincode:req.body.pincode,
+    //     mobile: req.body.mobile,
+    //     completedTasks:req.body.completedTasks,
+    //     skills:req.body.skills,
+    //     imagePath:req.body.imagePath,
+    //     email:req.body.email,
+    //     dob:req.body.dob,
+    //     username:req.body.username,
+    //     password:req.body.password,
+    //   active: req.body.active ? req.body.active : false
+    // });
+
+    
   };
 
 // Retrieve all Taskers from the database.
