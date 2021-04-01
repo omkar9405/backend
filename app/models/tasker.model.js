@@ -13,6 +13,10 @@ module.exports = mongoose => {
           type:String,
           required:true
         },
+        gender:{
+          type:String,
+          required:true
+        },
         jobtype: {
             type:String,
             required:true
@@ -55,7 +59,7 @@ module.exports = mongoose => {
           type:String,
           pattern: "^[1-9][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]$",
           format:Date,
-          example:"1998/04/16",
+          example:"1998-04-16",
           required:true
         },
         active: Boolean
