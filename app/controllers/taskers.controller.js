@@ -128,7 +128,7 @@ exports.create = async(req, res) => {
   });
 
   const salt =await bcrypt.genSalt(10);
-  //tasker.imagePath= 'https://justdialapi.herokuapp.com/images/'+ req.file.filename;
+  tasker.imagePath= 'https://justdialapi.herokuapp.com/images/'+ req.file.filename;
   tasker.password = await bcrypt.hash(password,salt);
   await tasker.save()
               .then(data => {
