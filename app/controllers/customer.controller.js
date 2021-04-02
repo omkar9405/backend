@@ -84,7 +84,8 @@ exports.create = async (req, res) => {
       dob,
       gender,
       signupcondition,
-      feedback
+      feedback,
+      filename
       
   }=req.body;
 
@@ -113,12 +114,12 @@ exports.create = async (req, res) => {
       dob,
       gender,
       signupcondition,
-      feedback
-        
+      feedback,
+      filename   
     });
 
     const salt =await bcrypt.genSalt(10);
-   
+    customer.imagePath= 'https://justdialapi.herokuapp.com/images/'+ customer.imagePath;
     customer.password = await bcrypt.hash(password,salt);
     await customer.save()
                 .then(data => {
@@ -180,7 +181,7 @@ exports.update = (req, res) => {
     }
   
     const id = req.params.id;
-    req.body.imagePath= 'https://justdialapi.herokuapp.com/images/'+ req.file.filename;
+ 
     Customer.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
       .then(data => {
         if (!data) {
