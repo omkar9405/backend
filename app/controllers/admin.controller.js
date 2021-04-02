@@ -40,7 +40,11 @@ exports.login =async (req,res)=>{
         admin:{
           id:admin.id,
           name:admin.name,
-          email:admin.email
+          email:admin.email,
+          imagePath:admin.imagePath,
+          permissions:admin.permissions,
+          username:admin.username,
+          mobile:admin.mobile
         }
       };
  
@@ -83,7 +87,7 @@ exports.create = async (req, res) => {
       password,
       mobile,
       email,
-      cart
+      imagePath
   }=req.body;
 
     try{
@@ -114,11 +118,11 @@ exports.create = async (req, res) => {
       password,
       mobile,
       email,
-      cart
+      imagePath
     });
 
     const salt =await bcrypt.genSalt(10);
-    //admin.imagePath= 'https://justdialapi.herokuapp.com/images/'+ req.file.filename;
+    admin.imagePath= 'https://justdialapi.herokuapp.com/images/'+ admin.imagePath;
     admin.password = await bcrypt.hash(password,salt);
     await admin.save()
                 .then(data => {

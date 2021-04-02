@@ -29,6 +29,9 @@ module.exports = mongoose => {
         email: {
             type:String,
             required:true
+        },
+        imagePath:{
+            type:String
         }
         // ,
         // cart: [
