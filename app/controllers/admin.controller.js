@@ -82,7 +82,8 @@ exports.create = async (req, res) => {
       username,
       password,
       mobile,
-      email 
+      email,
+      cart
   }=req.body;
 
     try{
@@ -112,7 +113,8 @@ exports.create = async (req, res) => {
       username,
       password,
       mobile,
-      email
+      email,
+      cart
     });
 
     const salt =await bcrypt.genSalt(10);

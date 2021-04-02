@@ -180,7 +180,7 @@ exports.update = (req, res) => {
     }
   
     const id = req.params.id;
-    Customer.imagePath= 'https://justdialapi.herokuapp.com/images/'+ req.file.filename;
+    req.body.imagePath= 'https://justdialapi.herokuapp.com/images/'+ req.file.filename;
     Customer.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
       .then(data => {
         if (!data) {
