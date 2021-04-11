@@ -1,9 +1,13 @@
 module.exports = mongoose => {
     var schema = mongoose.Schema(
       {
-        name:{
+        firstname:{
             type:String,
             required:true
+        },
+        lastname:{
+          type:String,
+          required:true
         },
         username:{
           type:String,
@@ -42,7 +46,18 @@ module.exports = mongoose => {
             type:String,
         },
         address: {
-            type:String,
+          city:{
+            type:String
+          },
+          street:{
+            type:String
+          },
+          state:{
+            type:String
+          },
+          zipcode:{
+            type:String
+          }
         },
         pincode: {
             type:Number,

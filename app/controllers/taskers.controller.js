@@ -38,12 +38,12 @@ exports.login =async (req,res)=>{
       }
  
       const payload={
-        customer:{
+        tasker:{
           id:tasker.id,
-          name:tasker.name,
           username:tasker.username,
-          imagePath:tasker.imagePath,
-          email:tasker.email
+          email:tasker.email,
+          mobile:tasker.mobile
+          
         }
       };
  
@@ -77,7 +77,8 @@ exports.login =async (req,res)=>{
 // Create and Save a new Tasker
 exports.create = async(req, res) => {
   const {
-    name,
+    firstname,
+    lastname,
 	    jobtype,
 	    education,
 	    address,
@@ -109,7 +110,8 @@ exports.create = async(req, res) => {
       );
     }
    tasker = new Tasker({
-    name,
+    firstname,
+    lastname,
 	    jobtype,
 	    education,
 	    address,
