@@ -19,7 +19,7 @@ module.exports = mongoose => {
         },
         gender:{
           type:String,
-          required:true
+          //required:true
         },
         jobtype: {
             type:String,
@@ -77,7 +77,9 @@ module.exports = mongoose => {
           example:"1998-04-16",
           required:true
         },
-        active: Boolean
+        active: {
+          type:Boolean
+        }
       },
       { timestamps: true }
     );

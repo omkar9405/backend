@@ -227,6 +227,33 @@ exports.update = (req, res) => {
       });
   };
 
+  // Update a Tasker by the id in the request
+exports.patch = (req, res,next) => {
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Data to update can not be empty!"
+    });
+  }
+
+  const id = req.params.id;
+  var active = req.body;
+  
+  Tasker.findByIdAndUpdate(id,{ $set:active })
+    .then(data => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot update Tasker with id=${id}. Maybe Tasker was not found!`
+        });
+      } else res.send({ message: "Tasker was updated successfully." });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Tasker with id=" + id
+      });
+    });
+  
+};
+
 // Delete a Tasker with the specified id in the request
 exports.delete = (req, res) => {
     const id = req.params.id;

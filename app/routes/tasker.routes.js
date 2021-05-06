@@ -22,6 +22,9 @@ module.exports = app => {
   
     // Update a Tutorial with id
     router.put("/:id", auth,storage,API.update);
+
+    //Patch the active status
+    router.patch("/status/:id", auth,storage,API.patch);
   
     // Delete a Tutorial with id
     router.delete("/:id", auth,API.delete);
