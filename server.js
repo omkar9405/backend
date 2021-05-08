@@ -60,6 +60,7 @@ require("./app/routes/customer.routes")(app);
 require("./app/routes/admin.routes")(app);
 require("./app/routes/team.routes")(app);
 require("./app/routes/cart.routes")(app);
+require("./app/routes/request.routes")(app);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);

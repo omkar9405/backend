@@ -12,4 +12,5 @@ db.customers = require("./customer.model.js")(mongoose);
 db.admins = require("./admin.model.js")(mongoose);
 db.teams = require("./team.model.js")(mongoose);
 db.carts = require("./cart.model.js")(mongoose);
+db.requests = require("./servicerequest.model")(mongoose);
 module.exports = db;
