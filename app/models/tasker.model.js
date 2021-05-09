@@ -57,10 +57,9 @@ module.exports = mongoose => {
           },
           zipcode:{
             type:String
-          }
-        },
-        pincode: {
-            type:Number,
+          }, pincode: {
+            type:Number
+        	}
         },
         mobile: {
             type:Number,
