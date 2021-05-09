@@ -141,29 +141,8 @@ exports.create = async(req, res) => {
     res.status(500).json(
 {
   message:"Error in Saving"	
-}	
-);
-  }
-      
-    // Create a Tasker
-    // const tasker = new Tasker({
-    //     name: req.body.name,
-	  //   jobtype:req.body.jobtype,
-	  //   education: req.body.education,
-	  //   address:req.body.address,
-    //     pincode:req.body.pincode,
-    //     mobile: req.body.mobile,
-    //     completedTasks:req.body.completedTasks,
-    //     skills:req.body.skills,
-    //     imagePath:req.body.imagePath,
-    //     email:req.body.email,
-    //     dob:req.body.dob,
-    //     username:req.body.username,
-    //     password:req.body.password,
-    //   active: req.body.active ? req.body.active : false
-    // });
-
-    
+});
+  } 
   };
 
 // Retrieve all Taskers from the database.
