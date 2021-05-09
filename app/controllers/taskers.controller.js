@@ -227,7 +227,7 @@ exports.update = (req, res) => {
   };
 
   // Update a Tasker by the id in the request
-exports.patch = (req, res,next) => {
+exports.patch = (req, res) => {
   if (!req.body) {
     return res.status(400).send({
       message: "Data to update can not be empty!"
@@ -241,13 +241,13 @@ exports.patch = (req, res,next) => {
     .then(data => {
       if (!data) {
         res.status(404).send({
-          message: `Cannot update Tasker with id=${id}. Maybe Tasker was not found!`
+          message: `Cannot update Tasker with id=${id}. not active`
         });
       } else res.send({ message: "Tasker was updated successfully." });
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Tasker with id=" + id
+        message: "Error updating status with id=" + id
       });
     });
   

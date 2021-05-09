@@ -45,7 +45,7 @@ module.exports = mongoose => {
         education: {
             type:String,
         },
-        address: {
+        address: [{
           city:{
             type:String
           },
@@ -55,12 +55,10 @@ module.exports = mongoose => {
           state:{
             type:String
           },
-          zipcode:{
-            type:String
-          }, pincode: {
+          pincode: {
             type:Number
         	}
-        },
+        }],
         mobile: {
             type:Number,
             required:true
