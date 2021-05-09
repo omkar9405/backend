@@ -111,7 +111,7 @@ exports.create = async(req, res) => {
    tasker = new Tasker({
     firstname,
     lastname,
-	    jobtype,
+	   jobtype,
 	    education,
 	    address,
         mobile,
@@ -168,10 +168,10 @@ exports.create = async(req, res) => {
 
 // Retrieve all Taskers from the database.
 exports.findAll = (req, res) => {
-    const name = req.query.name;
-    var condition = name ? { name: { $regex: new RegExp(name), $options: "i" } } : {};
+    // const firstname = req.query.firstname;
+    // var condition = firstname ? { firstname: { $regex: new RegExp(firstname), $options: "i" } } : {};
   
-    Tasker.find(condition)
+    Tasker.find({})
       .then(data => {
         res.send(data);
       })
@@ -196,7 +196,8 @@ exports.findOne = (req, res) => {
       .catch(err => {
         res
           .status(500)
-          .send({ message: "Error retrieving Tasker with id=" + id });
+          .send({ message: "Error retrieving Tasker with id=" + id 
+        });
       });
   };
 
