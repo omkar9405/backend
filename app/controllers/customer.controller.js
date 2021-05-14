@@ -73,11 +73,11 @@ exports.login =async (req,res)=>{
 exports.create = async (req, res) => {
     // Create a customer
     const {
-      customername,
+      firstName,
+      lastName,
       service,
       address,
       imagePath,
-      pincode,
       mobile,
       email,
       password,
@@ -103,11 +103,11 @@ exports.create = async (req, res) => {
         );
       }
      customer = new Customer({
-      customername,
+      firstName,
+      lastName,
       service,
       address,
       imagePath,
-      pincode,
       mobile,
       email,
       password,

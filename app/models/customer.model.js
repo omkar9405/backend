@@ -1,22 +1,34 @@
 module.exports = mongoose => {
     var schema = mongoose.Schema(
       {
-        customername:{
+        firstName:{
             type:String,
             required:true
         },
+        lastName:{
+          type:String,
+          required:true
+      },
         service: {
             type:String
         },
         imagePath:{
           type:String
         },
-        address: {
+        address: [{
+          street:{
             type:String
-        },
-        pincode: {
-            type:Number
-        },
+            },
+            city:{
+              type:String
+            },
+            state:{
+              type:String
+            },
+            zipcode:{
+              type:Number
+            }
+        }],
         mobile: {
             type:Number,
             required:true

@@ -39,7 +39,7 @@ module.exports = mongoose => {
                 }
             },
             requestDate:{
-                
+                type:Date
             },
             taskOption:{
               type:String
