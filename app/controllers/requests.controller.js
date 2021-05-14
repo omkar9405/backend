@@ -57,7 +57,7 @@ exports.findAll = (req, res) => {
 //findAllCustomerRequest
 exports.findAllCustomerRequest = (req,res) =>{
     const customer_id = req.params.c_id;
- Request.findOne({c_id:customer_id})
+ Request.find({c_id:customer_id})
  .then(data =>{
 res.send(data);
  })
@@ -71,7 +71,7 @@ res.send(data);
 //findAllEmployeeRequest
 exports.findAllEmployeeRequest = (req,res) =>{
   const tasker_id = req.params.taskerId;
-Request.findOne({taskerId:tasker_id})
+Request.find({taskerId:tasker_id})
 .then(data =>{
 res.send(data);
 })
