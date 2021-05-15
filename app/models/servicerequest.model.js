@@ -24,7 +24,7 @@ module.exports = mongoose => {
               type:String,
               required:true
             },
-            address:{
+            address:[{
                 street:{
                     type:String
                 },
@@ -37,7 +37,7 @@ module.exports = mongoose => {
                 zipcode:{
                     type:Number
                 }
-            },
+            }],
             requestDate:{
                 type:Date
             },
