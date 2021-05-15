@@ -25,6 +25,7 @@ module.exports = app => {
     // // Update a Tutorial with id
     router.patch("/addComment/:taskId",request.addComment);
     router.patch("/accepted/:taskId",request.isAccepted);
+    router.patch("/status/:taskId",request.changeStatus);
   
     // // Delete a Tutorial with id
     router.delete("/:id", auth,request.deleteRequest);
