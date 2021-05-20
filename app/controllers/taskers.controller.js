@@ -166,16 +166,14 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
   
-    Tasker.findById(id)
+    Tasker.findById({id})
       .then(data => {
-        if (!data)
-          res.status(404).send({ message: "Not found Tasker with id " + id });
-        else res.send(data);
+        res.send(data);
       })
       .catch(err => {
         res
           .status(500)
-          .send({ message: "Error retrieving Tasker with id=" + id 
+          .send({ message: err.message || "Error retrieving Tasker with id=" + id 
         });
       });
   };
@@ -214,9 +212,9 @@ exports.patch = (req, res) => {
   }
 
   const id = req.params.id;
-  var active = req.body;
+ // var active = req.body.active;
   
-  Tasker.findByIdAndUpdate(id,{ $set:active },{ useFindAndModify: false })
+  Tasker.findByIdAndUpdate(id,{$set:req.body} ,{ useFindAndModify: false })
     .then(data => {
       if (!data) {
         res.status(404).send({

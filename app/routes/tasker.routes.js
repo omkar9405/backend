@@ -18,7 +18,7 @@ module.exports = app => {
     router.get("/active",auth, API.findAllActive);
   
     // Retrieve a single Tutorial with id
-    router.get("/:id",auth, API.findOne);
+    router.get("/:id", auth, API.findOne);
   
     // Update a Tutorial with id
     router.put("/:id", auth,storage,API.update);
