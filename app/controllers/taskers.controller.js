@@ -166,7 +166,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
   
-    Tasker.findById({id})
+    Tasker.findById(id)
       .then(data => {
         res.send(data);
       })
