@@ -216,7 +216,7 @@ exports.patch = (req, res) => {
   const id = req.params.id;
   var active = req.body;
   
-  Tasker.findByIdAndUpdate(id,{ $set:active })
+  Tasker.findByIdAndUpdate(id,{ $set:active },{ useFindAndModify: false })
     .then(data => {
       if (!data) {
         res.status(404).send({
