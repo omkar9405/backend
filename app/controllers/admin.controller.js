@@ -163,9 +163,10 @@ exports.findOne = (req, res) => {
         else res.send(data);
       })
       .catch(err => {
-        res
-          .status(500)
-          .send({ message: "Error retrieving Tutorial with id=" + id });
+        res.status(500).send({ 
+          message:
+          err.message || "Some error occurred while retrieving admin."+id  
+        });
       });
   };
 
