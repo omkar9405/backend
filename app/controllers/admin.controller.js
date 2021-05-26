@@ -39,12 +39,8 @@ exports.login =async (req,res)=>{
       const payload={
         admin:{
           id:admin.id,
-	  username:admin.username,
-          email:admin.email,
-          /*name:admin.name,
-          imagePath:admin.imagePath,
-          permissions:admin.permissions,
-          mobile:admin.mobile*/
+	        username:admin.username,
+          email:admin.email
         }
       };
  
