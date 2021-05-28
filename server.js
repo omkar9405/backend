@@ -1,19 +1,21 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
+const morgan = require("morgan");
 var fs = require('fs');
 var path = require('path');
 require('dotenv').config();
 const app = express();
+const helmet = require("helmet");
 
-app.use(cors());
-
-// parse requests of content-type - application/json
-//app.use(bodyParser.json());
-
-// parse requests of content-type - application/x-www-form-urlencoded
-//app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(cors());
+app.use(morgan("dev"));
+app.use(helmet());
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN,
+  })
+);
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
@@ -33,8 +35,7 @@ const db = require("./app/models");
 db.mongoose
   .connect(db.url, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
+    useUnifiedTopology: true,useFindAndModify: false })
   .then(() => {
     console.log("Connected to the database!");
   })

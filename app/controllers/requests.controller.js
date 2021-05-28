@@ -2,8 +2,14 @@
 const db = require("../models");
 const Request = db.requests;
 
+
+const { transporter } = require("../config/emailTransporter");
+const { EmailSend } = require("../controllers/email.controller");
+require("dotenv").config();
+
+
 // Create and Save a new Tasker
-exports.create = (req, res) => {
+exports.create =async (req, res) => {
   
     // Create a Tasker
     const request = new Request({
@@ -27,6 +33,49 @@ exports.create = (req, res) => {
     request
       .save(request)
       .then(data => {
+        try{
+        transporter.sendMail({
+          to: request.email,
+          subject: "noreply@atyourservice - Confirmation Email",
+          html: `
+          <h1>Hello ${request.c_firstName} ${request.c_lastName},</h1>
+          <h2>Welcome To <strong>At<span style="color:orange;">Y</span>ourService</strong></h2>
+          <h2>Your request has been recorded successfully.</h2> 
+          <h3>You Entered Details</h3>
+          <table id="customers" style="font-family: Arial, Helvetica, sans-serif;
+          border-collapse: collapse;
+          width: 100%;">
+            <tr style="padding-top: 12px;padding-bottom: 12px;text-align: left;background-color: #04AA6D;color: white;">
+              <th>ID</th>
+              <th>FirstName</th>
+              <th>LastName</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Address</th>
+              <th>Date</th>
+              <th>TaskOption</th>
+              <th>Description</th>
+              <th>TaskerID</th>
+            </tr>
+            <tr style="border: 1px solid #ddd;padding: 8px;">
+              <td>${request.id}</td>
+              <td>${request.c_firstName}</td>
+              <td>${request.c_lastName}</td>
+              <td>${request.phone}</td>
+              <td>${request.email}</td>
+              <td>${request.address[0].street},${request.address[0].city},${request.address[0].state},${request.address[0].zipcode}</td>
+              <td>${request.requestDate}</td>
+              <td>${request.taskOption}</td>
+              <td>${request.description}</td>
+              <td>${request.taskerId}</td>
+            </tr>
+          </table>
+          <h2>Thank you for visiting us.</h2>`,
+        });
+      }catch(error)
+      {
+        console.log("error while sending mail");
+      }
         res.send(data);
       })
       .catch(err => {
@@ -39,10 +88,8 @@ exports.create = (req, res) => {
 
 // Retrieve all Taskers from the database.
 exports.findAll = (req, res) => {
-    const tid = req.query.taskId;
-    // var condition = name ? { name: { $regex: new RegExp(name), $options: "i" } } : {};
-  
-    Request.find({taskId:tid})
+    
+    Request.find({})
       .then(data => {
         res.send(data);
       })

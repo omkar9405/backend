@@ -49,7 +49,7 @@ exports.login =async (req,res)=>{
      jwt.sign(
        payload,"randomString",
        {
-         expiresIn:3600
+         expiresIn:"1d"
        },
        (err,token)=>{
          if(err) throw err;
@@ -158,7 +158,6 @@ exports.findAll = async (req, res) => {
 // Find a single Tutorial with an id
 exports.findOne = async (req, res) => {
     const id = req.params.id;
-  
     Customer.findById(id)
       .then(data => {
         if (!data)

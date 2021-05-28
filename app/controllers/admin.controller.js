@@ -47,7 +47,7 @@ exports.login =async (req,res)=>{
       jwt.sign(
         payload,"randomString",
         {
-          expiresIn:3600
+          expiresIn:"1d"
         },
         (err,token)=>{
           if(err) throw err;
