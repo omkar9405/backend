@@ -8,14 +8,14 @@ require('dotenv').config();
 const app = express();
 const helmet = require("helmet");
 
-// app.use(cors());
+ app.use(cors());
 app.use(morgan("dev"));
 app.use(helmet());
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN,
-  })
-);
+//app.use(
+ // cors({
+  //  origin: process.env.CORS_ORIGIN,
+ // })
+//);
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
