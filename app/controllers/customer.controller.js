@@ -166,8 +166,11 @@ exports.findOne = async (req, res) => {
       })
       .catch(err => {
         res
-          .status(500)
-          .send({ message: "Error retrieving Tutorial with id=" + id });
+          .status(500).json(
+	{
+		message: err.message|| "Error retrieving Tutorial with id=" + id 	
+	});
+         // .send({ });
       });
   };
 
