@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  secureConnection: false,
+  secureConnection:true,
   port: 587,
   tls: {
       ciphers: 'SSLv3'
