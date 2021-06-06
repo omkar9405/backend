@@ -272,10 +272,11 @@ try
       html: `
       your password reset code is ${code}
       `,
-    });
+    }).then(data=>{
     res.status(200).send({
       message:"success" +code 
     });
+  })
   }catch(error)
   {
     res.status(500).send({
