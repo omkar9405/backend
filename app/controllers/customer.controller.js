@@ -309,7 +309,7 @@ try
     req.body.password=password;
     req.body.email=email;
     if(req.params.code==newcode){
-    Customer.findOneAndUpdate(email,{$set:req.body} ,{ useFindAndModify: false })
+    Customer.findByIdAndUpdate(id,{$set:req.body} ,{ useFindAndModify: false })
       .then(data => {
         console.log(req.body+" "+data);
        res.status(200).send({
