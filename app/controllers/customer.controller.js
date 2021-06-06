@@ -307,6 +307,7 @@ try
     const salt =await bcrypt.genSalt(10);
     password = await bcrypt.hash(req.body.password,salt);
     req.body.password=password;
+    req.body.email=email;
     if(req.params.code==newcode){
     Customer.findOneAndUpdate(email,{$set:req.body} ,{ useFindAndModify: false })
       .then(data => {
