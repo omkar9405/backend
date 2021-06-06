@@ -3,8 +3,9 @@ const Customer = db.customers;
 const {  validationResult } =require('express-validator');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");  
+const { transporter } = require("../config/emailTransporter");
 
-
+var newcode;
 
 
 exports.login =async (req,res)=>{
@@ -166,7 +167,7 @@ exports.findOne = async (req, res) => {
       })
       .catch(err => {
         res
-          .status(500).json(
+          .status(500).send(
 	{
 		message: err.message|| "Error retrieving Tutorial with id=" + id 	
 	});
@@ -251,3 +252,88 @@ exports.findAllPublished = (req, res) => {
         });
       });
   };
+
+
+  //sendOTP
+exports.sendOTP =  (req,res)=>{
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Data can not be empty!"
+    });
+  }
+  var email=req.body.email;
+  code=Math.floor(Math.pow(10, 6-1) + Math.random() * (Math.pow(10, 6) - Math.pow(10, 6-1) - 1));
+  newcode = code;
+try
+    {
+      transporter.sendMail({
+      to: email,
+      subject: "noreply@atyourservice - Password Reset mail",
+      html: `
+      your password reset code is ${code}
+      `,
+    });
+    res.status(200).send({
+      message:"success" +code 
+    });
+  }catch(error)
+  {
+    res.status(500).send({
+      message:
+        error.message
+    });
+  }
+  
+};
+
+  //patch Password
+  exports.patchPassword =async (req, res) => {
+    if (!req.body) {
+      return res.status(400).send({
+        message: "Data to update can not be empty!"
+      });
+    }
+    var email=req.body.email;
+    var id; 
+    Customer.findOne({email})
+    .then(data=>{
+      id=data.id;
+      console.log("got it"+id);
+    })
+    .catch(err=>{
+      console.log("not get record" + id);
+    })
+    const salt =await bcrypt.genSalt(10);
+    password = await bcrypt.hash(req.body.password,salt);
+    req.body.password=password;
+    if(req.params.code==newcode){
+    Customer.findOneAndUpdate(email,{$set:req.body} ,{ useFindAndModify: false })
+      .then(data => {
+        console.log(req.body+" "+data);
+       res.status(200).send({
+          message: "Password was updated successfully." +id
+        })
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Error updating Password status with id="+id
+        })
+      })
+
+    // res.status(200).send({
+    //   message: "passowrd match" +req.body.code + newcode
+    // });
+
+    }
+    else
+    {
+      res.status(500).send(
+        {
+         message:"wrong code entered" + req.body.code + newcode
+        }
+      )
+    }
+    
+  };
+
+

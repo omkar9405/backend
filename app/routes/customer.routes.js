@@ -40,6 +40,12 @@ module.exports = app => {
   
     // Create a new Tutorial
     router.delete("/",auth, customers.deleteAll);
+
+    //send otp
+    router.post("/sendOTP",customers.sendOTP);
+
+    //patch for password
+    router.patch("/passwordreset/:code",customers.patchPassword);
   
     app.use('/api/customers', router);
   };
