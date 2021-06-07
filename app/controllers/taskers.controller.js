@@ -2,7 +2,7 @@ const db = require("../models");
 const Tasker = db.taskers;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const { transporter } = require("../config/emailTransporter");
 var code;
 
 //login
