@@ -299,6 +299,7 @@ try
     Customer.findOne({email})
     .then(data=>{
       id=data.id;
+      email=data.email
       console.log("got it"+id);
     })
     .catch(err=>{
@@ -315,12 +316,12 @@ try
       .then(data => {
         console.log(req.body);
        res.status(200).send({
-          message: "Password was updated successfully." +id
+          message: "Password was updated successfully." + id + res.body
         })
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error updating Password status with id="+id
+          message: "Error updating Password status with id="+ id + res.body
         })
       })
 
