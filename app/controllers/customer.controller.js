@@ -324,11 +324,9 @@ try
           message: "Error updating Password status with id="+ id + res.body
         })
       })
-
     // res.status(200).send({
     //   message: "passowrd match" +req.body.code + newcode
     // });
-
     }
     else
     {
@@ -338,7 +336,6 @@ try
         }
       )
     }
-    
   };
 
 

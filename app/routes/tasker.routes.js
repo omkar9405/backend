@@ -31,6 +31,13 @@ module.exports = app => {
   
     // Create a new Tutorial
     router.delete("/", auth,API.deleteAll);
+
+     //send otp
+     router.post("/sendOTP",API.sendOTP);
+
+     //patch for password
+     router.patch("/passwordreset/:code",API.patchPassword);
+   
   
     app.use('/api/taskers', router);
   };
