@@ -311,7 +311,7 @@ try
     console.log(req.body);
     if(req.params.code==newcode){
       console.log(req.body);
-    Customer.update(id,{$set:req.body} ,{ useFindAndModify: false })
+    Customer.update({id},{$set:req.body} ,{ useFindAndModify: false })
       .then(data => {
         console.log(req.body);
        res.status(200).send({
