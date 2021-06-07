@@ -305,11 +305,11 @@ try
       console.log("not get record" + id);
     })
     const salt =await bcrypt.genSalt(10);
-    password = await bcrypt.hash(req.body.password,salt);
-    req.body.password=password;
-    req.body.email=email;
+    req.body.password = await bcrypt.hash(req.body.password,salt);
+    // req.body.password=password;
+    // req.body.email=email;
     if(req.params.code==newcode){
-    Customer.findByIdAndUpdate(id,{$set:req.body} ,{ useFindAndModify: false })
+    Customer.findByIdAndUpdate(id,{$set:req.body.password} ,{ useFindAndModify: false })
       .then(data => {
         console.log(req.body+" "+data);
        res.status(200).send({
